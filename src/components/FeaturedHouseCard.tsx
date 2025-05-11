@@ -1,6 +1,11 @@
 import { Card, CardContent, Typography, Button } from '@mui/material';
+import { House } from '@/app/types';
 
-export default function FeaturedHouseCard({ house }: { house: any }) {
+interface FeaturedHouseCardProps {
+  house: House;
+}
+
+export default function FeaturedHouseCard({ house }: FeaturedHouseCardProps) {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardContent>
