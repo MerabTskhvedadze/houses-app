@@ -1,4 +1,3 @@
-// src/components/Filters.tsx
 import {
   Slider,
   Select,
