@@ -1,5 +1,5 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Button } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 import Link from 'next/link';
 import { House } from '@/app/types';
 
@@ -8,10 +8,11 @@ interface HouseTableProps {
 }
 
 const columns: GridColDef<House>[] = [
-  { field: 'name', headerName: 'Name', width: 200 },
+  { field: 'name', headerName: 'Name', width: 200, flex: 1 },
   { field: 'price', headerName: 'Price (€)', width: 120 },
   { field: 'type', headerName: 'Type', width: 120 },
-  { field: 'area', headerName: 'Area', width: 120 },
+  { field: 'bedrooms', headerName: 'Bedrooms', width: 85 },
+  { field: 'area', headerName: 'Area', width: 120, flex: 1 },
   {
     field: 'actions',
     headerName: 'Actions',
@@ -28,7 +29,7 @@ const columns: GridColDef<House>[] = [
 
 export default function HouseTable({ houses }: HouseTableProps) {
   return (
-    <div style={{ height: 400, width: '100%' }}>
+    <Stack sx={{ height: 400, width: '100%' }}>
       <DataGrid
         rows={houses}
         columns={columns}
@@ -39,6 +40,6 @@ export default function HouseTable({ houses }: HouseTableProps) {
           },
         }}
       />
-    </div>
+    </Stack>
   );
 }

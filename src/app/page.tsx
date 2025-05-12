@@ -1,10 +1,10 @@
 import FeaturedHouseCard from '@/components/FeaturedHouseCard';
 import Link from 'next/link';
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 
 export default function Home() {
   return (
-    <div>
+    <Box>
       <FeaturedHouseCard
         house={{
           id: 1,
@@ -19,6 +19,6 @@ export default function Home() {
       <Link href='/houses'>
         <Button variant='contained'>See all houses</Button>
       </Link>
-    </div>
+    </Box>
   );
 }
