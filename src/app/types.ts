@@ -6,3 +6,9 @@ export interface House {
   area: string;
   description: string;
 }
+
+export type HouseFilters = {
+  priceRange: [number, number];
+  type: 'all' | House['type'];
+  area: 'all' | string;
+};
