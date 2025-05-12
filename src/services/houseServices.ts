@@ -1,5 +1,4 @@
 import { House } from '@/app/types';
-
 const API_URL = '/data/houses.json';
 
 export async function fetchHouses(): Promise<House[]> {
@@ -12,6 +11,24 @@ export async function fetchHouses(): Promise<House[]> {
     console.error('Error fetching houses:', error);
     return [];
   }
+}
+
+export async function searchHouses(query: string): Promise<House[]> {
+  const allHouses = await fetchHouses();
+  const lowerQuery = query.toLowerCase();
+
+  return allHouses.filter(
+    (house) =>
+      house.name.toLowerCase().includes(lowerQuery) ||
+      house.area.toLowerCase().includes(lowerQuery) ||
+      house.type.toLowerCase().includes(lowerQuery)
+  );
+}
+
+export async function fetchFeaturedHouses(): Promise<House[]> {
+  const allHouses = await fetchHouses();
+  const featuredHouses = allHouses.slice(0, 14).map((house) => ({ ...house }));
+  return featuredHouses;
 }
 
 export async function fetchHouseById(id: number): Promise<House | undefined> {
