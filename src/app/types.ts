@@ -6,6 +6,8 @@ export interface House {
   area: string;
   description: string;
   bedrooms: number;
+  size: number;
+  imageUrl?: string;
 }
 
 export type HouseFilters = {
@@ -13,3 +15,11 @@ export type HouseFilters = {
   type: 'all' | House['type'];
   area: 'all' | string;
 };
+
+export interface SearchComponentProps {
+  initialValue?: string;
+  placeholder?: string;
+  onSearch: (searchValue: string) => void;
+  debounceDelay?: number;
+  showClearButton?: boolean;
+}

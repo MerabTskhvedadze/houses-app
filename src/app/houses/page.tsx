@@ -5,6 +5,7 @@ import Filters from '@/components/Filters';
 import { fetchHouses } from '@/services/houseServices';
 import { House } from '@/app/types';
 import { Box, Button, Link, Stack, Typography } from '@mui/material';
+import Loading from '@/components/Loading';
 
 export default function HousesPage() {
   const [allHouses, setAllHouses] = useState<House[]>([]);
@@ -52,8 +53,7 @@ export default function HousesPage() {
     setFilteredHouses(filtered);
   };
 
-  if (loading)
-    return <div className='p-8 text-center'>Loading properties...</div>;
+  if (loading) return <Loading />;
 
   return (
     <Box

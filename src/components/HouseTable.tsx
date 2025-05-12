@@ -8,15 +8,48 @@ interface HouseTableProps {
 }
 
 const columns: GridColDef<House>[] = [
-  { field: 'name', headerName: 'Name', width: 200, flex: 1 },
-  { field: 'price', headerName: 'Price (€)', width: 120 },
-  { field: 'type', headerName: 'Type', width: 120 },
-  { field: 'bedrooms', headerName: 'Bedrooms', width: 85 },
-  { field: 'area', headerName: 'Area', width: 120, flex: 1 },
+  {
+    field: 'name',
+    headerName: 'Name',
+    width: 200,
+    flex: 1,
+    headerAlign: 'left',
+  },
+  {
+    field: 'area',
+    headerName: 'Area',
+    width: 120,
+    headerAlign: 'center',
+    align: 'center',
+  },
+  {
+    field: 'price',
+    headerName: 'Price (€)',
+    width: 120,
+    headerAlign: 'center',
+    align: 'center',
+  },
+  {
+    field: 'bedrooms',
+    headerName: 'Bedrooms',
+    width: 85,
+    headerAlign: 'center',
+    align: 'center',
+  },
+  {
+    field: 'type',
+    headerName: 'Type',
+    width: 120,
+    headerAlign: 'center',
+    align: 'center',
+  },
   {
     field: 'actions',
     headerName: 'Actions',
     width: 150,
+    flex: 1,
+    align: 'right',
+    headerAlign: 'right',
     renderCell: (params) => (
       <Link href={`/houses/${params.row.id}`} passHref>
         <Button variant='outlined' size='small'>
