@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import '@/styles/globals.css';
+import { Container } from '@mui/material';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -13,7 +14,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body>{children}</body>
+      <body>
+        <Container maxWidth='lg' className='py-4'>
+          {children}
+        </Container>
+      </body>
     </html>
   );
 }

@@ -5,6 +5,7 @@ export interface House {
   type: 'apartment' | 'villa' | 'house';
   area: string;
   description: string;
+  bedrooms: number;
 }
 
 export type HouseFilters = {

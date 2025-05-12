@@ -1,80 +1,167 @@
+'use client';
+import { House } from '@/app/types';
 import {
-  Slider,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  RadioGroup,
+  Checkbox,
   FormControlLabel,
-  Radio,
   Typography,
+  Slider,
+  Button,
+  Box,
+  Stack,
 } from '@mui/material';
-import { HouseFilters } from '@/app/types';
+import { useState, useEffect } from 'react';
 
 interface FiltersProps {
-  filters: HouseFilters;
-  setFilters: React.Dispatch<React.SetStateAction<HouseFilters>>;
+  houses: House[];
+  onFilterChange: (filters: {
+    locations: string[];
+    priceRange: [number, number];
+    types: string[];
+    bedrooms: number | 'any';
+  }) => void;
 }
 
-export default function Filters({ filters, setFilters }: FiltersProps) {
-  const handlePriceChange = (event: Event, newValue: number | number[]) => {
-    setFilters((prev) => ({
-      ...prev,
-      priceRange: newValue as [number, number],
-    }));
+export default function Filters({ houses, onFilterChange }: FiltersProps) {
+  const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 2500000]);
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+  const [bedrooms, setBedrooms] = useState<number | 'any'>('any');
+
+  // Get unique locations and property types
+  const locations = [...new Set(houses.map((house) => house.area))].sort();
+  const propertyTypes = [...new Set(houses.map((house) => house.type))].sort();
+
+  useEffect(() => {
+    onFilterChange({
+      locations: selectedLocations,
+      priceRange,
+      types: selectedTypes,
+      bedrooms,
+    });
+  }, [selectedLocations, priceRange, selectedTypes, bedrooms]);
+
+  const handleLocationToggle = (location: string) => {
+    setSelectedLocations((prev) =>
+      prev.includes(location)
+        ? prev.filter((l) => l !== location)
+        : [...prev, location]
+    );
   };
 
   return (
-    <div style={{ marginBottom: '20px' }}>
-      <FormControl fullWidth sx={{ mb: 2 }}>
-        <Typography gutterBottom>Price Range</Typography>
+    <Box
+      sx={{
+        p: 2,
+        bgcolor: 'background.paper',
+        borderRadius: 1,
+        boxShadow: 1,
+      }}
+    >
+      {/* Location Filter */}
+      <Stack spacing={2}>
+        <Box>
+          <Typography variant='h6' gutterBottom>
+            Locations
+          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              overflowX: 'auto',
+              gap: 2,
+              py: 1,
+            }}
+          >
+            {locations.map((location) => (
+              <FormControlLabel
+                key={location}
+                control={
+                  <Checkbox
+                    checked={selectedLocations.includes(location)}
+                    onChange={() => handleLocationToggle(location)}
+                  />
+                }
+                label={location}
+              />
+            ))}
+          </Box>
+        </Box>
+      </Stack>
+
+      {/* Price Range Filter */}
+      <Box>
+        <Typography variant='h6' gutterBottom>
+          Price Range (€)
+        </Typography>
         <Slider
-          value={filters.priceRange}
-          onChange={handlePriceChange}
+          value={priceRange}
+          onChange={(_, newValue) =>
+            setPriceRange(newValue as [number, number])
+          }
           valueLabelDisplay='auto'
           min={0}
-          max={1000000}
+          max={2500000}
           step={50000}
         />
-      </FormControl>
-
-      <FormControl fullWidth sx={{ mb: 2 }}>
-        <InputLabel>Type</InputLabel>
-        <Select
-          value={filters.type}
-          label='Type'
-          onChange={(e) =>
-            setFilters((prev) => ({
-              ...prev,
-              type: e.target.value as HouseFilters['type'],
-            }))
-          }
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            color: 'text.secondary',
+            typography: 'caption',
+          }}
         >
-          <MenuItem value='all'>All</MenuItem>
-          <MenuItem value='apartment'>Apartment</MenuItem>
-          <MenuItem value='villa'>Villa</MenuItem>
-          <MenuItem value='house'>House</MenuItem>
-        </Select>
-      </FormControl>
+          <span>€{priceRange[0].toLocaleString()}</span>
+          <span>€{priceRange[1].toLocaleString()}</span>
+        </Box>
+      </Box>
 
-      <FormControl component='fieldset' fullWidth sx={{ mb: 2 }}>
-        <Typography component='legend'>Area</Typography>
-        <RadioGroup
-          row
-          value={filters.area}
-          onChange={(e) =>
-            setFilters((prev) => ({ ...prev, area: e.target.value }))
-          }
-        >
-          <FormControlLabel value='all' control={<Radio />} label='All' />
-          <FormControlLabel value='Athens' control={<Radio />} label='Athens' />
-          <FormControlLabel
-            value='Mykonos'
-            control={<Radio />}
-            label='Mykonos'
-          />
-        </RadioGroup>
-      </FormControl>
-    </div>
+      {/* Property Type Filter */}
+      <Box>
+        <Typography variant='h6' gutterBottom>
+          Property Types
+        </Typography>
+        <Stack direction='row' spacing={1} flexWrap='wrap'>
+          {propertyTypes.map((type) => (
+            <Button
+              key={type}
+              variant={selectedTypes.includes(type) ? 'contained' : 'outlined'}
+              onClick={() =>
+                setSelectedTypes((prev) =>
+                  prev.includes(type)
+                    ? prev.filter((t) => t !== type)
+                    : [...prev, type]
+                )
+              }
+            >
+              {type}
+            </Button>
+          ))}
+        </Stack>
+      </Box>
+
+      {/* Bedrooms Filter */}
+      <Box>
+        <Typography variant='h6' gutterBottom>
+          Bedrooms
+        </Typography>
+        <Stack direction='row' spacing={1} flexWrap='wrap'>
+          <Button
+            variant={bedrooms === 'any' ? 'contained' : 'outlined'}
+            onClick={() => setBedrooms('any')}
+          >
+            Any
+          </Button>
+          {[1, 2, 3, 4, 5].map((num) => (
+            <Button
+              key={num}
+              variant={bedrooms === num ? 'contained' : 'outlined'}
+              onClick={() => setBedrooms(num)}
+            >
+              {num}+
+            </Button>
+          ))}
+        </Stack>
+      </Box>
+    </Box>
   );
 }
