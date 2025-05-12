@@ -1,4 +1,6 @@
 import FeaturedHouseCard from '@/components/FeaturedHouseCard';
+import Link from 'next/link';
+import { Button } from '@mui/material';
 
 export default function Home() {
   return (
@@ -14,6 +16,9 @@ export default function Home() {
             'A luxurious villa with modern amenities and a spacious garden.',
         }}
       />
+      <Link href='/houses'>
+        <Button variant='contained'>See all houses</Button>
+      </Link>
     </div>
   );
 }
